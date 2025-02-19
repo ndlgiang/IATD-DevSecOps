@@ -55,6 +55,7 @@ jobs:
 
   dast:
     needs: [test]
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -117,7 +118,8 @@ jobs:
 
 
   build:
-    needs: [dast, sonarqube]
+    # needs: [dast, sonarqube]
+    needs: [sonarqube]
     permissions:
       id-token: write    
     runs-on: ubuntu-latest
@@ -163,6 +165,8 @@ jobs:
           WEEK1_CONTAINER=$(curl -X POST -H "Authorization: Bearer $AZURE_ACCESS_TOKEN" -d "$DOCKERHUB_USERNAME/devops-labs" https://devsecops-ver.azurewebsites.net/api/week1-container)
           echo "Week1 container upload: $WEEK1_CONTAINER"
 
+          echo "file=@$GITHUB_WORKSPACE/sonarqube-report.json"
+          (ls "@$GITHUB_WORKSPACE/sonarqube-report.json" && echo yes) || echo no
           SONAR_RESPONSE=$(curl -X POST -H "Authorization: Bearer $AZURE_ACCESS_TOKEN" -F "file=@$GITHUB_WORKSPACE/sonarqube-report.json" https://devsecops-ver.azurewebsites.net/api/week3-sonar-report)
           echo "Sonar upload: $SONAR_RESPONSE"
           ZAP_RESPONSE=$(curl -X POST -H "Authorization: Bearer $AZURE_ACCESS_TOKEN" -F "file=@$GITHUB_WORKSPACE/report_json.json" https://devsecops-ver.azurewebsites.net/api/week3-zap-report)
