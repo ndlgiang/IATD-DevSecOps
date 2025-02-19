@@ -16,4 +16,4 @@ alive = int(os.getenv('tokentimetolive', 60))
 # $env:vulnerable=0; ~/.virtualenvs/home_lab/bin/python app.py
 # $env:vulnerable=1; ~/.virtualenvs/home_lab/bin/python app.py
 if __name__ == '__main__':
-    vuln_app.run(host='0.0.0.0', port=5001, debug=True)
+    vuln_app.run(host='0.0.0.0', port=5000, debug=True)
