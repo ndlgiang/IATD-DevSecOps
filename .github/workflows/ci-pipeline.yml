@@ -157,6 +157,13 @@ jobs:
           inlineScript: |
             ACCESS_TOKEN=$(az account get-access-token | jq -r .accessToken)
             echo "azureAccessToken=$ACCESS_TOKEN" >> "$GITHUB_OUTPUT"
+      - name: Download SonarQube report
+        run: |
+          sleep 30
+          URL="${{ secrets.SONAR_URL }}/api/qualitygates/project_status?p=1&projectKey=devsecops-app&branch=main"
+          echo "Report URL $URL"
+          curl -u ${{ secrets.SONAR_TOKEN }}: "$URL" -o sonarqube-report.json
+
       - name: Upload reports
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
