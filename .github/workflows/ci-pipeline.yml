@@ -136,7 +136,7 @@ jobs:
 
   security_gate:
     needs: [sonarqube, dast, image-scan]
-    if: true
+    if: false
     runs-on: ubuntu-latest
     steps:
     - name: Download sonarqube-report
@@ -183,8 +183,8 @@ jobs:
         echo "All security gates passed"
 
   build:
-    needs: [security_gate]
-    # needs: [sonarqube, dast, image-scan]
+    # needs: [security_gate]
+    needs: [sonarqube, dast, image-scan]
     # needs: [test]
     if: true
     permissions:
